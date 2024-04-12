@@ -1,0 +1,17 @@
+# --------------------------------------------------------------------------------------------------
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (C) 2024 Jayesh Badwaik <j.badwaik@fz-juelich.de>
+# --------------------------------------------------------------------------------------------------
+
+name: license
+on:
+  push:
+    branches: [ main ]
+jobs:
+  license:
+    runs-on: ubuntu-latest
+    container:
+      image: fsfe/reuse
+    steps:
+      - uses: actions/checkout@v4
+      - run: reuse lint

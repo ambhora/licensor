@@ -1,0 +1,44 @@
+# --------------------------------------------------------------------------------------------------
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (C) 2024 Jayesh Badwaik <j.badwaik@fz-juelich.de>
+# --------------------------------------------------------------------------------------------------
+
+name: python
+on:
+  push:
+    branches: [ main ]
+jobs:
+  latest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    container:
+      image: python:latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m venv /root/venv
+      - run: source /root/venv/bin/activate
+      - run: pip install --upgrade pip
+      - run: pip install hatch pytest
+      - run: hatch env create test
+      - run: hatch env run --env test pytest
+  mypy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    container:
+      image: python:latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m venv /root/venv
+      - run: source /root/venv/bin/activate
+      - run: pip install --upgrade pip
+      - run: pip install hatch
+      - run: pip install mypy
+      - run: pip install types-PyYAML
+      - run: hatch env create types
+      - run: hatch env run --env types mypy .
+
+
